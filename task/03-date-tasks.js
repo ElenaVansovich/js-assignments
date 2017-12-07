@@ -22,7 +22,7 @@
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
 function parseDataFromRfc2822(value) {
-   throw new Error('Not implemented');
+   return new Date(value);
 }
 
 /**
@@ -37,7 +37,7 @@ function parseDataFromRfc2822(value) {
  *    '2016-01-19T08:07:37Z' => Date()
  */
 function parseDataFromIso8601(value) {
-   throw new Error('Not implemented');
+   return new Date(value);
 }
 
 
@@ -56,7 +56,16 @@ function parseDataFromIso8601(value) {
  *    Date(2015,1,1)    => false
  */
 function isLeapYear(date) {
-   throw new Error('Not implemented');
+   if(date.getFullYear() % 4 == 0){
+		if(date.getFullYear() % 400 == 0){
+			return true;
+		}
+		if(date.getFullYear() % 100 == 0){
+			return false;
+		}
+		return true;
+	}
+	return false;
 }
 
 
@@ -76,7 +85,32 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
 function timeSpanToString(startDate, endDate) {
-   throw new Error('Not implemented');
+	var time = endDate.getTime() - startDate.getTime();
+	var date = new Date(0,0,0,0,0,0,time);
+	var res = "";
+	if(date.getHours() % 10 == date.getHours()){
+		res += "0";
+	}
+	res += date.getHours();
+	res += ":";
+	if(date.getMinutes() % 10 == date.getMinutes()){
+		res += "0";
+	}
+	res += date.getMinutes();
+	res += ":";
+	if(date.getSeconds() % 10 == date.getSeconds()){
+		res += "0";
+	}
+	res += date.getSeconds();
+	res += ".";
+	if(date.getMilliseconds() % 10 == date.getMilliseconds()){
+		res += "0";
+	}
+	if(date.getMilliseconds() % 100 == date.getMilliseconds()){
+		res += "0";
+	}
+	res += date.getMilliseconds();
+	return res;
 }
 
 
@@ -94,7 +128,13 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
 function angleBetweenClockHands(date) {
-    throw new Error('Not implemented');
+    var hour = date.getUTCHours();
+	var minute = date.getUTCMinutes();
+	var degrees = 0.5 * Math.abs(hour * 60 - 11 * minute)%360;
+	if(degrees > 180){
+		degrees = 360 - degrees;
+	}
+	return degrees*Math.PI/180;
 }
 
 
